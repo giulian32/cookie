@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie Clicker Deluxe</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background: linear-gradient(135deg, #f5e0c3, #ffe4b5);
+    }
+
+    #startScreen, #gameScreen {
+      display: none;
+    }
+
+    #startScreen {
+      display: block;
+      padding: 50px;
+    }
+
+    #gameScreen {
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 48px;
+      color: #d2691e;
+      margin: 20px 0;
+      text-shadow: 2px 2px #fff;
+    }
+
+    button {
+      background-color: #ff8c00;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    button:hover {
+      background-color: #e07800;
+      transform: translateY(-3px);
+    }
+
+    #cookie {
+      font-size: 100px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      animation: float 2s infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    #cookiesCount {
+      font-size: 28px;
+      margin: 20px 0;
+      color: #6a4f4b;
+      text-shadow: 1px 1px #fff;
+    }
+
+    .button-group {
+      margin: 20px auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Startbildschirm -->
+  <div id="startScreen">
+    <h1>Willkommen bei Cookie Clicker Deluxe!</h1>
+    <p>Erklicke dir deinen Weg zur Spitze! Baue deine Cookies auf, kaufe Upgrades und dominiere das Spiel!</p>
+    <button onclick="startGame()">Spiel Starten</button>
+  </div>
+
+  <!-- Spielbildschirm -->
+  <div id="gameScreen">
+    <h1>Cookie Clicker Deluxe</h1>
+    <div id="cookie">🍪</div>
+
+    <div id="cookiesCount">Cookies: 0</div>
+
+    <div class="button-group">
+      <button id="shopButton1">Upgrade: +1 Cookie/Klick (Kosten: <span id="cost1">10</span>)</button>
+      <button id="shopButton2">Upgrade: +5 Cookies/Klick (Kosten: <span id="cost2">50</span>)</button>
+      <button id="rebirthButton">Rebirth (Setzt Cookies zurück, erhöht Klickwert) (100 Cookies)</button>
+      <button id="resetButton">Spiel Zurücksetzen</button>
+    </div>
+  </div>
+
+  <script>
+    // Globale Variablen
+    let cookies = 0;
+    let cookiesPerClick = 1;
+
+    // Preise
+    let upgrade1Cost = 10;
+    let upgrade2Cost = 50;
+
+    // HTML-Elemente
+    const startScreen = document.getElementById('startScreen');
+    const gameScreen = document.getElementById('gameScreen');
+    const cookieElement = document.getElementById('cookie');
+    const cookiesCountElement = document.getElementById('cookiesCount');
+    const cost1Element = document.getElementById('cost1');
+    const cost2Element = document.getElementById('cost2');
+
+    // Spiel starten
+    function startGame() {
+      startScreen.style.display = 'none';
+      gameScreen.style.display = 'block';
+    }
+
+    // Cookie-Klick
+    cookieElement.addEventListener('click', () => {
+      cookies += cookiesPerClick;
+      updateDisplay();
+    });
+
+    // Upgrade 1
+    document.getElementById('shopButton1').addEventListener('click', () => {
+      if (cookies >= upgrade1Cost) {
+        cookies -= upgrade1Cost;
+        cookiesPerClick += 1;
+        upgrade1Cost = Math.floor(upgrade1Cost * 1.5);
+        cost1Element.textContent = upgrade1Cost;
+        updateDisplay();
+      } else {
+        alert('Nicht genug Cookies!');
+      }
+    });
+
+    // Upgrade 2
+    document.getElementById('shopButton2').addEventListener('click', () => {
+      if (cookies >= upgrade2Cost) {
+        cookies -= upgrade2Cost;
+        cookiesPerClick += 5;
+        upgrade2Cost = Math.floor(upgrade2Cost * 1.5);
+        cost2Element.textContent = upgrade2Cost;
+        updateDisplay();
+      } else {
+        alert('Nicht genug Cookies!');
+      }
+    });
+
+    // Rebirth
+    document.getElementById('rebirthButton').addEventListener('click', () => {
+      if (cookies >= 100) {
+        cookies = 0;
+        cookiesPerClick += 2;
+        alert('Rebirth erfolgreich! Cookies pro Klick erhöht.');
+        updateDisplay();
+      } else {
+        alert('Du brauchst mindestens 100 Cookies für einen Rebirth!');
+      }
+    });
+
+    // Spiel zurücksetzen
+    document.getElementById('resetButton').addEventListener('click', () => {
+      cookies = 0;
+      cookiesPerClick = 1;
+      alert('Spiel zurückgesetzt!');
+      updateDisplay();
+    });
+
+    // Anzeige aktualisieren
+    function updateDisplay() {
+      cookiesCountElement.textContent = `Cookies: ${cookies}`;
+    }
+  </script>
+
+</body>
+</html>
